@@ -1,52 +1,42 @@
-﻿using System;
+using System;
 using UnityEngine;
 
-
-private int low health = 30;                        // Variable for low health threshold
-private int high health = 60;                       // Variable for high health threshold
-private int evade distance = 10;                    // Distance to move away when evading
-
-public class EvadeState : BaseState                 // Evade state for SmartTank FSM
+public class CAA_EvadeStateFSM : BaseState
 {
-    private SmartTank smartTank;                    // Reference to the SmartTank
+    private SmartTank tank;
+    private float lowHealth = 30f;                                                                                         // what the health needs to be to evade
+    private float highHealth = 60f;                                                                                        // what the health needs to be to stop evading
+    private float evadeDistance = 10f;                                                                                     // distance to move away when evading
 
-    public EvadeState(SmartTank smartTank)
+    public CAA_EvadeStateFSM(SmartTank tank)
     {
-        this.smartTank = smartTank;
+        this.tank = tank;
     }
 
-    public override Type StateEnter()
+    public override Type StateEnter()                                                                                      // on entering evade state
     {
         return null;
     }
 
-    public override Type StateExit()
+    public override Type StateExit()                                                                                       // on exiting evade state
     {
         return null;
     }
 
-    public override Type StateUpdate()
+    public override Type StateUpdate()                                                                                     // during evade state
     {
-
-       
-        // If health is lower than 30%, switch to EvadeState
-        if (smartTank.TankCurrentHealth < smartTank.TankMaxHealth * 0.3f)         // Check if health is low
+        if (tank.TankCurrentHealth < tank.TankMaxHealth * 0.3f)                                                            // if health is below 30, evade
         {
-            // Evade logic: Move away from the player
-            Vector3 directionAwayFromPlayer = (smartTank.transform.position - smartTank.PlayerTank.transform.position).normalized;
-            Vector3 evadeTargetPosition = smartTank.transform.position + directionAwayFromPlayer * 10f; // Move 10 units away
-            smartTank.MoveToPosition(evadeTargetPosition);
-            return null; // Stay in EvadeState
-        }
-        else if (smartTank.TankCurrentHealth >= smartTank.TankMaxHealth * 0.6f)       // If health is above 60%, switch to AttackState
-        {
-            return typeof(AttackState);
-        }
-        else
-        {
-            // Resupply, find health
-            smartTank.ResupplyState();
+            Vector3 directionAway = (tank.transform.position - tank.PlayerTank.transform.position).normalized;
+            Vector3 evadeTarget = tank.transform.position + directionAway * evadeDistance;
+            tank.MoveToPosition(evadeTarget);
             return null;
         }
+        else if (tank.TankCurrentHealth >= tank.TankMaxHealth * 0.6f)                                                      // if health is above 60, go back to patrol
+        {
+            return typeof(PatrolState);                                                                                    // Go back to patrol
+        }
+
+        return null;
     }
 }
