@@ -5,11 +5,12 @@ using System;
 
 public abstract class PatrolState : BaseState
 {
-    private SmartTank smartTank;
-    private int lowAmmo = 0;
-    private int lowHP = 0;
-    private int lowFuel = 0;
-
+    private SmartTank smartTank; //Tank object
+    private int lowAmmo = 0; //Variable for how low the ammo can go 
+    private int lowHP = 0; //Variable for how low the HP can go
+    private int lowFuel = 0; //Variable for how low the Fuel can go
+    float t; //Time variable
+    public HeuristicMode heuristicMode;
 
     public PatrolState(SmartTank smartTank)
     {
@@ -18,40 +19,39 @@ public abstract class PatrolState : BaseState
 
     public override Type StateUpdate()
     {
-        if (smartTank.TankCurrentAmmo() < lowAmmo)
+        //Does the Tank see Ammo pickups?
+        if (smartTank.VisibleConsumables.Count > 0 && (smartTank.TankCurrentHealth <= lowHP || smartTank.TankCurrentFuel <= lowFuel || smartTank.TankCurrentAmmo <= lowAmmo))
         {
-            if (smartTank.VisibleConsumables.ContainsKey()) //Does the Tank see Ammo pickups?
-            {
-                return typeof(ResupplyState);
-            }
+            return typeof(ResupplyState);
         }
-        else if (smartTank.TankCurrentFuel() < lowFuel)
+        else if (smartTank.VisibleEnemyBases.Count > 0)
         {
-            if (smartTank.VisibleConsumables.ContainsKey()) //Does the Tank see Fuel pickups?
-            {
-                return typeof(ResupplyState);
-            }
+            return typeof(PursueState);
         }
-        else if (smartTank.TankCurrentHealth < lowHP) 
+        //Does the Tank see an enemy and isn't on low HP?
+        else if ((smartTank.VisibleEnemyTanks.Count > 0 && VisibleEnemyTanks.First().Key != null) && smartTank.TankCurrentHealth > lowHP)
         {
-            if (smartTank.VisibleConsumables.ContainsKey()) //Does the Tank see HP pickups?
-            {
-                return typeof(ResupplyState);
-            }
+            return typeof(PursueState);
         }
         else
         {
+            FollowPathToRandomWorldPoint(1f, heuristicMode);
+            t += Time.deltaTime;
+            if (t > 10)
+            {
+                GenerateNewRandomWorldPoint();
+                t = 0;
+            }
             return null;
         }
     }
 
     public override Type StateEnter()
     {
-        return null;
+        t = 0; //Reset time Variable
     }
 
     public override Type StateExit()
     {
-        return null;
     }
 }
