@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class StateMachine : MonoBehaviour
+public class CAA_StateMachine : MonoBehaviour
 {
-    private Dictionary<Type, BaseState> states;
+    private Dictionary<Type, CAA_BaseState> states;
 
-    private BaseState currentState;
+    private CAA_BaseState currentState;
 
-    public BaseState CurrentState
+    public CAA_BaseState CurrentState
     {
         get
         {
@@ -21,7 +21,7 @@ public class StateMachine : MonoBehaviour
         }
     }
 
-    public void SetStates(Disctionary<Type, BaseState> states)
+    public void SetStates(Disctionary<Type, CAA_BaseState> states)
     {
         this.states = states;
     }
@@ -50,3 +50,4 @@ public class StateMachine : MonoBehaviour
         CurrentState.StateEnter();
     }
 }
+
