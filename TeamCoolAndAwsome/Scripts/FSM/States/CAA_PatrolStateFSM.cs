@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public abstract class PatrolState : BaseState
+public abstract class CAA_PatrolStateFSM : CAA_BaseStateFSM
 {
     private SmartTank smartTank; //Tank object
     private int lowAmmo = 0; //Variable for how low the ammo can go 
@@ -12,7 +12,7 @@ public abstract class PatrolState : BaseState
     float t; //Time variable
     public HeuristicMode heuristicMode;
 
-    public PatrolState(SmartTank smartTank)
+    public CAA_PatrolStateFSM(SmartTank smartTank)
     {
         this.enShip = enShip;
     }
