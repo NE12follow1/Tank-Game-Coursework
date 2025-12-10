@@ -2,14 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using System.Linq;
 
-public class CAA_StateMachine : MonoBehaviour
+public class CAA_StateMachineFSM : MonoBehaviour
 {
-    private Dictionary<Type, CAA_BaseState> states;
+    private Dictionary<Type, CAA_BaseStateFSM> states;
 
-    private CAA_BaseState currentState;
+    private CAA_BaseStateFSM currentState;
 
-    public CAA_BaseState CurrentState
+    public CAA_BaseStateFSM CurrentState
     {
         get
         {
@@ -21,7 +22,7 @@ public class CAA_StateMachine : MonoBehaviour
         }
     }
 
-    public void SetStates(Disctionary<Type, CAA_BaseState> states)
+    public void SetStates(Dictionary<Type, CAA_BaseStateFSM> states)
     {
         this.states = states;
     }
@@ -50,4 +51,3 @@ public class CAA_StateMachine : MonoBehaviour
         CurrentState.StateEnter();
     }
 }
-

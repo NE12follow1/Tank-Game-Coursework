@@ -1,4 +1,5 @@
-﻿using System.Collections;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -31,6 +32,7 @@ public class CAA_SmartTankFSM : AITank
     /// </summary>
     public override void AITankStart()
     {
+        InitialiseStateMachine();
     }
 
     /// <summary>
@@ -41,6 +43,16 @@ public class CAA_SmartTankFSM : AITank
     public override void AITankUpdate()
     {
         //Code goes here
+    }
+
+    void InitialiseStateMachine()
+    {
+        Dictionary<Type, CAA_BaseStateFSM> states = new Dictionary<Type, CAA_BaseStateFSM>();
+
+        states.Add(typeof(CAA_ChaseStateFSM), new CAA_ChaseStateFSM(this));
+        states.Add(typeof(CAA_AttackStateFSM), new CAA_AttackStateFSM(this));
+
+        GetComponent<CAA_StateMachineFSM>().SetStates(states);
     }
 
     /// <summary>
