@@ -11,7 +11,7 @@ public class CAA_AttackStateFSM : CAA_BaseStateFSM
     public int lowAmmo = 0;
     public float lowFuel = 30;
     public float lowHealth = 15;
-    public float firingRange = 40;
+    public float firingRange = 30;
 
     public CAA_AttackStateFSM(CAA_SmartTankFSM smartTank)
     {
@@ -31,7 +31,7 @@ public class CAA_AttackStateFSM : CAA_BaseStateFSM
             return typeof(CAA_EvadeStateFSM); // If it is, go to the evade state
         }
         // Does the tank have a target and sufficient fuel and ammo?
-        else if (smartTank.TankCurrentFuel <= lowFuel || smartTank.TankCurrentAmmo <= lowAmmo || (smartTank.VisibleEnemyTanks.Count < 0 && smartTank.VisibleEnemyBases.Count > 0))
+        else if (smartTank.TankCurrentFuel <= lowFuel || smartTank.TankCurrentAmmo <= lowAmmo || (smartTank.VisibleEnemyTanks.Count == 0 && smartTank.VisibleEnemyBases.Count == 0))
         {
             return typeof(CAA_PatrolStateFSM); // If it doesn't have either or both, go to the patrol state
         }
