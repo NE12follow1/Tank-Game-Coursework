@@ -2,19 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using static AStar;
 
 public abstract class CAA_PatrolStateFSM : CAA_BaseStateFSM
 {
-    private SmartTank smartTank; //Tank object
+    private CAA_SmartTankFSM smartTank; //Tank object
     private int lowAmmo = 0; //Variable for how low the ammo can go 
     private int lowHP = 0; //Variable for how low the HP can go
     private int lowFuel = 0; //Variable for how low the Fuel can go
     float t; //Time variable
     public HeuristicMode heuristicMode;
 
-    public CAA_PatrolStateFSM(SmartTank smartTank)
+    public CAA_PatrolStateFSM(CAA_SmartTankFSM smartTank)
     {
-        this.enShip = enShip;
+        this.smartTank = smartTank;
     }
 
     public override Type StateUpdate()
@@ -35,11 +36,11 @@ public abstract class CAA_PatrolStateFSM : CAA_BaseStateFSM
         }
         else
         {
-            FollowPathToRandomWorldPoint(0.5f, heuristicMode);
+            smartTank.FollowPathToRandomWorldPoint(0.5f, heuristicMode);
             t += Time.deltaTime;
             if (t > 10)
             {
-                GenerateNewRandomWorldPoint();
+                smartTank.GenerateNewRandomWorldPoint();
                 t = 0;
             }
             return null;
@@ -49,9 +50,11 @@ public abstract class CAA_PatrolStateFSM : CAA_BaseStateFSM
     public override Type StateEnter()
     {
         t = 0; //Reset time Variable
+        return null;
     }
 
     public override Type StateExit()
     {
+        return null;
     }
 }
