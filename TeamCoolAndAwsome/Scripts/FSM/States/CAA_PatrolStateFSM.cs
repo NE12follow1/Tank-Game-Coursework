@@ -29,13 +29,13 @@ public abstract class CAA_PatrolStateFSM : CAA_BaseStateFSM
             return typeof(PursueState);
         }
         //Does the Tank see an enemy and isn't on low HP?
-        else if ((smartTank.VisibleEnemyTanks.Count > 0 && VisibleEnemyTanks.First().Key != null) && smartTank.TankCurrentHealth > lowHP)
+        else if (smartTank.VisibleEnemyTanks.Count > 0 && smartTank.TankCurrentHealth > lowHP)
         {
             return typeof(PursueState);
         }
         else
         {
-            FollowPathToRandomWorldPoint(1f, heuristicMode);
+            FollowPathToRandomWorldPoint(0.5f, heuristicMode);
             t += Time.deltaTime;
             if (t > 10)
             {
