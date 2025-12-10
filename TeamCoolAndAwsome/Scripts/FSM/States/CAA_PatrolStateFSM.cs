@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using static AStar;
+using System.Linq;
 
-public abstract class CAA_PatrolStateFSM : CAA_BaseStateFSM
+public class CAA_PatrolStateFSM : CAA_BaseStateFSM
 {
     private CAA_SmartTankFSM smartTank; //Tank object
     private int lowAmmo = 0; //Variable for how low the ammo can go 
-    private int lowHP = 0; //Variable for how low the HP can go
-    private int lowFuel = 0; //Variable for how low the Fuel can go
+    private int lowHP = 15; //Variable for how low the HP can go
+    private int lowFuel = 30; //Variable for how low the Fuel can go
     float t; //Time variable
     public HeuristicMode heuristicMode;
 
@@ -21,8 +22,9 @@ public abstract class CAA_PatrolStateFSM : CAA_BaseStateFSM
     public override Type StateUpdate()
     {
         //Does the Tank see Ammo pickups?
-        if (smartTank.VisibleConsumables.Count > 0 && (smartTank.TankCurrentHealth <= lowHP || smartTank.TankCurrentFuel <= lowFuel || smartTank.TankCurrentAmmo <= lowAmmo))
+        if (smartTank.VisibleConsumables.Count > 0 && (smartTank.TankCurrentHealth < 125 || smartTank.TankCurrentFuel < 100 || smartTank.TankCurrentAmmo < 20))
         {
+            smartTank.FollowPathToWorldPoint(smartTank.VisibleConsumables.First().Key, 0.8f);
             return null;
         }
         else if (smartTank.VisibleEnemyBases.Count > 0)
