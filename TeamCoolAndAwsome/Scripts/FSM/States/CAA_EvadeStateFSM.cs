@@ -1,42 +1,60 @@
 using System;
 using UnityEngine;
+using System.Linq;
 
-public class CAA_EvadeStateFSM : BaseState
+public class CAA_EvadeStateFSM : CAA_BaseStateFSM
 {
-    private SmartTank tank;
-    private float lowHealth = 30f;                                                                                         // what the health needs to be to evade
-    private float highHealth = 60f;                                                                                        // what the health needs to be to stop evading
-    private float evadeDistance = 10f;                                                                                     // distance to move away when evading
+    private CAA_SmartTankFSM smartTank;
 
-    public CAA_EvadeStateFSM(SmartTank tank)
+    public float lowHealth = 30;                                                                   // below this means stay in evade
+    public float safeHealth = 60;                                                                  // above this means return to patrol
+    public float evadeDistance = 20;                                                               // how far to run away
+
+    public CAA_EvadeStateFSM(CAA_SmartTankFSM smartTank)
     {
-        this.tank = tank;
+        this.smartTank = smartTank;
     }
 
-    public override Type StateEnter()                                                                                      // on entering evade state
+    public override Type StateEnter()
     {
         return null;
     }
 
-    public override Type StateExit()                                                                                       // on exiting evade state
+    public override Type StateUpdate()
     {
-        return null;
-    }
-
-    public override Type StateUpdate()                                                                                     // during evade state
-    {
-        if (tank.TankCurrentHealth < tank.TankMaxHealth * 0.3f)                                                            // if health is below 30, evade
+        // If health is now safe then return to patrol
+        if (smartTank.TankCurrentHealth >= safeHealth)
         {
-            Vector3 directionAway = (tank.transform.position - tank.PlayerTank.transform.position).normalized;
-            Vector3 evadeTarget = tank.transform.position + directionAway * evadeDistance;
-            tank.MoveToPosition(evadeTarget);
+            return typeof(CAA_PatrolStateFSM);
+        }
+
+        // Still too low health then continue evading
+        if (smartTank.VisibleEnemyTanks.Count > 0)                                                                   
+        {
+            // find closest visible enemy tank
+            var closestEnemy = smartTank.VisibleEnemyTanks
+                .OrderBy(e => Vector3.Distance(smartTank.transform.position, e.Key.transform.position))
+                .First().Key;
+
+            // move away from enemy
+            Vector3 directionAway =                                                                                  
+                (smartTank.transform.position - closestEnemy.transform.position).normalized;
+
+            Vector3 evadeTarget =
+                smartTank.transform.position + directionAway * evadeDistance;
+
+            smartTank.FollowPathToWorldPoint(evadeTarget, 1);
+            smartTank.TurretFaceWorldPoint(closestEnemy.transform.position);
+
             return null;
         }
-        else if (tank.TankCurrentHealth >= tank.TankMaxHealth * 0.6f)                                                      // if health is above 60, go back to patrol
-        {
-            return typeof(PatrolState);                                                                                    // Go back to patrol
-        }
 
+        // If no enemies visible then return to patrol 
+        return typeof(CAA_PatrolStateFSM);
+    }
+
+    public override Type StateExit()
+    {
         return null;
     }
 }
