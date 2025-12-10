@@ -22,16 +22,16 @@ public abstract class CAA_PatrolStateFSM : CAA_BaseStateFSM
         //Does the Tank see Ammo pickups?
         if (smartTank.VisibleConsumables.Count > 0 && (smartTank.TankCurrentHealth <= lowHP || smartTank.TankCurrentFuel <= lowFuel || smartTank.TankCurrentAmmo <= lowAmmo))
         {
-            return typeof(ResupplyState);
+            return null;
         }
         else if (smartTank.VisibleEnemyBases.Count > 0)
         {
-            return typeof(PursueState);
+            return typeof(CAA_ChaseStateFSM);
         }
         //Does the Tank see an enemy and isn't on low HP?
         else if (smartTank.VisibleEnemyTanks.Count > 0 && smartTank.TankCurrentHealth > lowHP)
         {
-            return typeof(PursueState);
+            return typeof(CAA_ChaseStateFSM);
         }
         else
         {
