@@ -29,7 +29,7 @@ public class CAA_AttackStateFSM : CAA_BaseStateFSM
         // Is the tank at low health?
         if (smartTank.TankCurrentHealth <= lowHealth)
         {
-            return typeof(CAA_EvadeStateFSM); // If it is, go to the evade state
+            return typeof(CAA_PatrolStateFSM); // If it is, go to the evade state
         }
         // Does the tank have a target and sufficient fuel and ammo?
         else if (smartTank.TankCurrentFuel <= lowFuel || smartTank.TankCurrentAmmo <= lowAmmo || (smartTank.VisibleEnemyTanks.Count == 0 && smartTank.VisibleEnemyBases.Count == 0))

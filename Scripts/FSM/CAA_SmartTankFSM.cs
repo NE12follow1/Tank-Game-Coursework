@@ -16,7 +16,7 @@ public class CAA_SmartTankFSM : AITank
     public int lowHP = 25; // Variable for how low the HP can go
     public int lowFuel = 30; // Variable for how low the Fuel can go
     public GameObject myBase;
-    public List<Vector3> pointsOfInterest = new List<Vector3> { new Vector3(60, 0, -60), new Vector3(-60, 0, -60), new Vector3(-60, 0, 60)};
+    public GameObject patrolTargetObj;
 
     /// <summary>
     ///WARNING, do not use void <c>Start()</c> function, use this <c>AITankStart()</c> function instead if you want to use Start method from Monobehaviour.
@@ -24,8 +24,8 @@ public class CAA_SmartTankFSM : AITank
     /// </summary>
     public override void AITankStart()
     {
+        patrolTargetObj = new GameObject("patrolTargetObj");
         myBase = MyBases.First();
-        pointsOfInterest.Add(new Vector3(myBase.transform.position.x,0, myBase.transform.position.y));
         InitialiseStateMachine();
     }
 
