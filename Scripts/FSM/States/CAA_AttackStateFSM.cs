@@ -10,7 +10,7 @@ public class CAA_AttackStateFSM : CAA_BaseStateFSM
 
     public int lowAmmo = 0;
     public float lowFuel = 30;
-    public float lowHealth = 15;
+    public float lowHealth = 25;
     public float firingRange = 30;
 
     public CAA_AttackStateFSM(CAA_SmartTankFSM smartTank)

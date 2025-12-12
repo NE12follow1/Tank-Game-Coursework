@@ -13,8 +13,10 @@ public class CAA_SmartTankFSM : AITank
 {
     public HeuristicMode heuristicMode; /*!< <c>heuristicMode</c> Which heuristic used for find path. */
     public int lowAmmo = 0; // Variable for how low the ammo can go 
-    public int lowHP = 15; // Variable for how low the HP can go
+    public int lowHP = 25; // Variable for how low the HP can go
     public int lowFuel = 30; // Variable for how low the Fuel can go
+    public GameObject myBase;
+    public List<Vector3> pointsOfInterest = new List<Vector3> { new Vector3(60, 0, -60), new Vector3(-60, 0, -60), new Vector3(-60, 0, 60)};
 
     /// <summary>
     ///WARNING, do not use void <c>Start()</c> function, use this <c>AITankStart()</c> function instead if you want to use Start method from Monobehaviour.
@@ -22,6 +24,8 @@ public class CAA_SmartTankFSM : AITank
     /// </summary>
     public override void AITankStart()
     {
+        myBase = MyBases.First();
+        pointsOfInterest.Add(new Vector3(myBase.transform.position.x,0, myBase.transform.position.y));
         InitialiseStateMachine();
     }
 

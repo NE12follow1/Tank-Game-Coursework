@@ -32,6 +32,7 @@ public class CAA_StateMachineFSM : MonoBehaviour
         if (CurrentState == null)
         {
             CurrentState = states.Values.First();
+            CurrentState.StateEnter();
         }
         else
         {

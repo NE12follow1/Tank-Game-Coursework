@@ -59,9 +59,12 @@ public class CAA_EvadeStateFSM : CAA_BaseStateFSM
 
             return null;
         }
+        else
+        {
+            // If no enemies visible then back to patrol 
+            return typeof(CAA_PatrolStateFSM);
+        }
 
-        // If no enemies visible then back to patrol 
-        return typeof(CAA_PatrolStateFSM);
     }
 
     public override Type StateExit()
