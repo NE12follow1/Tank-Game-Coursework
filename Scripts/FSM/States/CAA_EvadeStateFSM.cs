@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 public class CAA_EvadeStateFSM : CAA_BaseStateFSM
 {
@@ -20,6 +21,7 @@ public class CAA_EvadeStateFSM : CAA_BaseStateFSM
 
     public override Type StateEnter()
     {
+        Debug.Log("EVADE STATE");
         return null;
     }
 
