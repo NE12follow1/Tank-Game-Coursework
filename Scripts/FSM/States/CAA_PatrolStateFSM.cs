@@ -17,7 +17,7 @@ public class CAA_PatrolStateFSM : CAA_BaseStateFSM
 
     public override Type StateUpdate()
     {
-        //Does the Tank see Ammo pickups?
+        //Does the Tank see any pickups?
         if (smartTank.VisibleConsumables.Count > 0)
         {
             smartTank.FollowPathToWorldPoint(smartTank.VisibleConsumables.First().Key, 0.8f);
