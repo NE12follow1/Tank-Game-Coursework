@@ -46,7 +46,7 @@ public class CAA_PatrolStateRBS : CAA_BaseStateRBS
             t = 0; // Reset the timer
         }
 
-        smartTank.FollowPathToWorldPoint(smartTank.PatrolTargetObj, smartTank.TankCurrentFuel / 125); // Move to the patrol target at a speed relative to the amount of fuel left
+        smartTank.FollowPathToWorldPoint(smartTank.PatrolTargetObj, ((smartTank.TankCurrentFuel / 2) / 100) + 0.1f); // Move to the patrol target at a speed relative to the amount of fuel left
 
         foreach (var item in smartTank.rules.GetRules)
         {

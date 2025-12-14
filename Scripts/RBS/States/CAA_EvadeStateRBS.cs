@@ -17,6 +17,7 @@ public class CAA_EvadeStateRBS : CAA_BaseStateRBS
 
     public override Type StateEnter()
     {
+        Debug.Log("EvadeState");
         smartTank.stats["evadeState"] = true;
         aStarScript = GameObject.Find("AStarPlane").GetComponent<AStar>(); // Give the AStar script the grid of the game
 
@@ -47,7 +48,7 @@ public class CAA_EvadeStateRBS : CAA_BaseStateRBS
 
     public override Type StateUpdate()
     {
-        smartTank.FollowPathToWorldPoint(smartTank.PatrolTargetObj, 0.7f); // Move towards the patrol target at 70% speed
+        smartTank.FollowPathToWorldPoint(smartTank.PatrolTargetObj, ((smartTank.TankCurrentFuel / 2) / 100) + 0.2f); // Move towards the patrol target at a slightly faster speed
 
         foreach (var item in smartTank.rules.GetRules)
         {
